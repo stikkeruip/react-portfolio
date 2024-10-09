@@ -1,6 +1,6 @@
 ﻿import React, { useState, useEffect, useRef } from 'react';
 
-const MenuItem = ({ link, active, setActive, onStartFalling }) => {
+const MenuItem = ({ link, active, setActive, onStartFalling, isMobile = false, }) => {
     const [isFalling, setIsFalling] = useState(false);
     const [hoverTimer, setHoverTimer] = useState(null);
     const menuItemRef = useRef(null);
@@ -17,7 +17,7 @@ const MenuItem = ({ link, active, setActive, onStartFalling }) => {
                 });
                 setIsFalling(true);
             }
-        }, 100);
+        }, 50);
         setHoverTimer(timer);
     };
 
@@ -43,13 +43,17 @@ const MenuItem = ({ link, active, setActive, onStartFalling }) => {
     return (
         <li
             ref={menuItemRef}
-            className={`${
-                active === link.title ? 'text-white' : 'text-secondary'
-            } hover:text-white text-[18px] font-medium cursor-pointer`}
+            className="hover:text-white font-medium cursor-pointer"
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
         >
-            <a href={`#${link.id}`} onClick={() => setActive(link.title)}>
+            <a
+                href={`#${link.id}`}
+                onClick={() => setActive(link.title)}
+                className={`${
+                    active === link.title ? 'text-white' : isMobile ? 'text-secondary' : 'text-secondary'
+                } ${isMobile ? 'font-poppins' : 'text-[18px]'} ${isMobile ? 'text-[16px]' : 'text-[18px]'}`}
+            >
                 {link.title}
             </a>
         </li>
