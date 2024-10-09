@@ -3,13 +3,14 @@ import { Link } from 'react-router-dom';
 
 import { styles } from '../styles';
 import { navLinks } from '../constants';
-import { logo } from '../assets';
+import {logo, menu, close} from '../assets';
 import MenuItem from './MenuItem';
 import FallingMenuItem from './FallingMenuItem';
 
 const Navbar = () => {
     const [active, setActive] = useState('');
     const [fallingItems, setFallingItems] = useState([]);
+    const [toggle, setToggle] = useState(false)
 
     const handleStartFalling = (itemData) => {
         setFallingItems((prev) => [...prev, itemData]);
@@ -51,6 +52,30 @@ const Navbar = () => {
                         />
                     ))}
                 </ul>
+                <div className="sm:hidden flex flex-1 justify-end items-center">
+                    <img
+                        src={toggle ? close : menu}
+                        alt="menu"
+                        className="w-[28px] h-[28px]
+                        object-contain cursor-pointer"
+                        onClick= {() => {setToggle(!toggle)}}
+                    />
+
+                    <div
+                        className={`${!toggle ? 'hidden' : 'flex'} p-6 black-gradient absolute top-20 right-0 mx-4 my-2 min-w-[140px] z-10 rounded-x1`}>
+                        <ul className="list-none flex justify-end items-start flex-col gap-4">
+                            {navLinks.map((link) => (
+                                <MenuItem
+                                    key={link.id}
+                                    link={link}
+                                    active={active}
+                                    setActive={setActive}
+                                    onStartFalling={handleStartFalling}
+                                />
+                            ))}
+                        </ul>
+                    </div>
+                </div>
             </div>
             {fallingItems.map((item) => (
                 <FallingMenuItem
